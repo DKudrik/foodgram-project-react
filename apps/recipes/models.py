@@ -69,8 +69,6 @@ class Recipe(models.Model):
         blank=False,
         verbose_name='Время приготовления, мин',
     )
-    #tags = models.ManyToManyField(Tag)
-    tags = TaggableManager()
     pub_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Дата публикации",
