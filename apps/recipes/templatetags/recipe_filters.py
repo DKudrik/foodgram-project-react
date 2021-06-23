@@ -6,6 +6,7 @@ register = template.Library()
 
 @register.filter
 def counter(author):
+    """Change a word declension depending on amount."""
     cnt = author.recipes.count()
     if cnt <= 3:
         return
@@ -20,42 +21,42 @@ def counter(author):
 
 @register.filter
 def follow_exists(author, user):
+    """Check subscription."""
     return Follow.objects.filter(author=author, user=user).exists()
 
 
 @register.filter
 def in_favorites(user, recipe):
+    """Check if a recipe is in favorites."""
     return Favourites.objects.filter(user=user, recipe=recipe).exists()
 
 
 @register.filter
 def in_purchases(user, recipe):
+    """Check if a recipe is in purchases."""
     return Purchase.objects.filter(user=user, recipe=recipe).exists()
 
 
 @register.filter
-def get_filter_tags(request, tag):
+def get_filter_tags(request, choosen_tag):
+    """
+    Check incoming tag for sorting
+    In case there is not tag - all the tags are applied.
+    """
     new_request = request.GET.copy()
     all_tags = Tag.objects.all()
     tags_list = request.GET.getlist('tags')
-    print('tag: ', tag)
     if not tags_list:
         for tag in all_tags:
             tags_list.append(tag.name)
+        if choosen_tag.name in tags_list:
+            tags_list.remove(choosen_tag.name)
         new_request.setlist('tags', tags_list)
-        print(1111)
         return new_request.urlencode()
-    else:
-        tags_list = new_request.getlist('tags')
-    if tag.name in tags_list:
-        print(tags_list)
-        print(tag.name)
-        tags_list.remove(tag.name)
-        print(tags_list)
+    if choosen_tag.name not in tags_list:
+        tags_list.append(choosen_tag.name)
         new_request.setlist('tags', tags_list)
-        print('if')
     else:
-        new_request.appendlist('tags', tag)
-        print('else')
-    print('tag_list: ', tags_list)
+        tags_list.remove(choosen_tag.name)
+        new_request.setlist('tags', tags_list)
     return new_request.urlencode()

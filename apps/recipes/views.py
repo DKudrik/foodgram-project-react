@@ -25,7 +25,8 @@ def index(request):
         'author'
     ).prefetch_related(
         'tags'
-    ).distinct()
+    ).distinct(
+    ).order_by('-pk')
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -90,17 +91,29 @@ def recipe_delete(request, recipe_id):
 
 @login_required
 def profile(request, username):
+    tags_list = request.GET.getlist('tags')
+    if not tags_list:
+        tags_list = ['завтрак', 'обед', 'ужин']
+    all_tags = Tag.objects.all()
+    recipes = Recipe.objects.filter(
+        tags__name__in=tags_list, author__username=username
+    ).select_related(
+        'author'
+    ).prefetch_related(
+        'tags'
+    ).distinct(
+    ).order_by('-pk')
     author = get_object_or_404(User, username=username)
-    recipes = author.recipes.all().order_by('-pk')
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'profile.html', {
-        'page': page,
-        'paginator': paginator,
-        'author': author,
-        'recipes': recipes,
-    })
+    context = {'paginator': paginator,
+               'recipes': recipes,
+               'author': author,
+               'page': page,
+               'all_tags': all_tags,
+               'tags_list': tags_list}
+    return render(request, 'profile.html', context)
 
 
 @login_required
@@ -167,15 +180,26 @@ def remove_favorite(request, recipe_id):
 
 @login_required
 def profile_favorites(request, username):
-    recipes = Recipe.objects.filter(favourites__user__username=username)
+    tags_list = request.GET.getlist('tags')
+    if not tags_list:
+        tags_list = ['завтрак', 'обед', 'ужин']
+    all_tags = Tag.objects.all()
+    recipes = Recipe.objects.filter(
+        tags__name__in=tags_list, favourites__user__username=username
+    ).select_related(
+        'author'
+    ).prefetch_related(
+        'tags'
+    ).distinct()
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'favorite.html', {
-        'page': page,
-        'paginator': paginator,
-        'recipes': recipes,
-    })
+    context = {'paginator': paginator,
+               'recipes': recipes,
+               'page': page,
+               'all_tags': all_tags,
+               'tags_list': tags_list}
+    return render(request, 'favorite.html', context)
 
 
 @login_required
@@ -222,3 +246,11 @@ def profile_purchases(request, username):
 
 def purchases_download(request):
     return create_pdf(request)
+
+
+def page_not_found(request, exception):
+    return render(request, 'errors/404.html', {'path': request.path}, status=404)
+
+
+def server_error(request):
+    return render(request, 'errors/500.html', status=500)

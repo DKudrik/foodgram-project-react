@@ -9,9 +9,9 @@ class IngredientRecipeInline(admin.TabularInline):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'author', 'title', 'pub_date',)
+    list_display = ('pk', 'author', 'title')
     search_fields = ('author', 'title')
-    list_filter = ('author', 'title')
+    list_filter = ('author', 'title', 'tags')
     inlines = (IngredientRecipeInline,)
 
 
@@ -28,12 +28,17 @@ class PurchaseAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('value')
+    list_display = ('name', 'color')
 
 
-admin.site.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('name', 'unit')
+    list_filter = ('name',)
+
+
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Purchase, PurchaseAdmin)
 admin.site.register(Favourites, FavouritesAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(Ingredient, IngredientAdmin)

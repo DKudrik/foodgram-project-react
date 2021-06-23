@@ -82,7 +82,8 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name='recipes'
+        related_name='recipes',
+        verbose_name='Теги',
     )
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
 

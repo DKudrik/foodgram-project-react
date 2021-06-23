@@ -12,6 +12,7 @@ class RecipeForm(ModelForm):
             "image",
             "description",
             "cooking_time",
+            'tags'
         ]
         tags = forms.ModelMultipleChoiceField(
             queryset=Tag.objects.all(),
