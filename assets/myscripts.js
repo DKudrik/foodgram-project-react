@@ -1,13 +1,12 @@
-let submit_button = document.getElementById("id_submit_button");
+let prev_element = document.getElementsByClassName('nav__item nav__item_active');
 
-function IsEmpty() {
-  email_length = document.getElementById("id_email").value.length;
-  if (email_length == "") {
-    alert("empty");
-  }
+
+function change_class() {
+  prev_element[0].className = ('nav__item');
+  this.className = ('nav__item nav__item_active');
   return;
 }
 
-submit_button.addEventListener("mouseenter", IsEmpty);
 
-console.log(submit_button);
+prev_element[0].addEventListener('click', change_class);
+console.log(this.classList.className);

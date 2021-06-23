@@ -4,7 +4,7 @@ const ingredientsContainer = document.querySelector('.form__field-group-ingredie
 const nameIngredient = document.querySelector('#nameIngredient');
 const formDropdownItems = document.querySelector('.form__dropdown-items');
 const cantidadVal = document.querySelector('#cantidadVal');
-const cantidad = document.querySelector('#cantidad')
+const cantidad = document.querySelector('#cantidad');
 const addIng = document.querySelector('#addIng');
 
 const api = new Api(apiUrl);
@@ -85,7 +85,7 @@ const cbEventInput = (elem) => {
     return api.getIngredients(elem.target.value).then( e => {
         if(e.length !== 0 ) {
             const items = e.map( elem => {
-                return `<a class="form__item-list" data-val="${elem.dimension}"">${elem.title}</a>`
+                return `<a class="form__item-list" data-val="${elem.unit}"">${elem.name}</a>`
             }).join(' ')
             formDropdownItems.style.display = 'flex';
             formDropdownItems.innerHTML = items;

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %} {{ author }} {% endblock %}
+{% load static %}
+{% block styles %}<link rel="stylesheet" href="{% static './pages/index.css' %}">{% endblock %}
+{% load recipe_filters %}
+{% block content %}
+{% csrf_token %}
+
+<div class="main__header">
+  <h1 class="main__title">{{ author }}</h1>
+  <ul class="tags">
+    <li class="tags__item">
+      <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="#"></a>
+      <span class="tags__label">Завтрак</span>
+    </li>
+    <li class="tags__item">
+      <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active" href="#"></a>
+      <span for="lunch" class="tags__label">Обед</span>
+    </li>
+    <li class="tags__item">
+      <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active" href="#"></a>
+      <label for="dinner" class="tags__label">Ужин</label>
+    </li>
+  </ul>
+</div>
+<div class="card-list">
+  {% if request.user != author %}
+    {% if author|follow_exists:user %}
+      <button class="button button_style_light-blue button_size_auto" name="subscribe">
+        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' author.username %}">Отписаться</a>
+      </button>
+    {% else %}
+      <button class="button button_style_light-blue button_size_auto" name="subscribe">
+        <a style="color: inherit; text-decoration:none;" 
+        href="{% url 'profile_follow' author.username %}">Подписаться на автора</a>
+      </button>
+    {% endif %} 
+  {% endif %}
+</div>
+<div class="card-list">
+  {% for recipe in page %}
+    {% include "includes/recipe_item.html" with post=post %}
+  {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {% if user.is_authenticated %}
+    <script src="{% static './js/components/Purchases.js' %}"></script>
+    <script src="{% static './js/components/Favorites.js' %}"></script>
+    <script src="{% static 'js/components/Subscribe.js' %}"></script>
+    <script src="{% static './js/config/config.js' %}"></script>
+
+    <script src="{% static './js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/SingleCard.js' %}"></script>
+    <script src="{% static './js/components/Header.js' %}"></script>
+
+    <script src="{% static './js/api/Api.js' %}"></script>
+    <script src="{% static 'singlePage.js' %}"></script>
+  {% else %}
+    <script src="{% static './js/components/Purchases.js' %}"></script>
+    <script src="{% static './js/config/config.js' %}"></script>
+
+    <script src="{% static './js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/SingleCard.js' %}"></script>
+    <script src="{% static './js/components/Header.js' %}"></script>
+
+    <script src="{% static './js/api/Api.js' %}"></script>
+    <script src="{% static 'singlePageNotAuth.js' %}"></script>
+  {% endif %}
+{% endblock %}

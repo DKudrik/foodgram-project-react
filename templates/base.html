@@ -8,31 +8,21 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{% block title %}Рецепты{% endblock %}</title>
   {% load static %}
-  {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'pages/form.css' %}">
-  {% endblock %}
+  {% block styles %} <link rel="stylesheet" type="text/css" href="{% static 'pages/form.css' %}"> {% endblock %}
 </head>
-
 <body class="body">
   {% include 'includes/header.html' %}
   <main class="main container">
     {% block content %}
+    <!-- Content -->
     {% endblock %}
   </main>
+  {% if page.has_other_pages %}
+    {% include "includes/paginator.html" with page=page paginator=paginator %}
+  {% endif %}
   {% include 'includes/footer.html' %}
-
-  <script src="{% static 'js/components/MainCards.js' %}"></script>
-
-  <script src="{% static 'js/components/Purchases.js' %}"></script>
-  <script src="{% static 'js/components/Favorites.js' %}"></script>
-
-  <script src="{% static 'js/config/config.js' %}"></script>
-  <script src="{% static 'js/components/CardList.js' %}"></script>
-  <script src="{% static 'js/components/Header.js' %}"></script>
-
-  <script src="{% static 'js/api/Api.js' %}"></script>
-  <script src="{% static 'indexAuth.js' %}"></script>
-
+  {% block scripts %}
+  <!-- Scripts -->
+  {% endblock %}
 </body>
-
 </html>

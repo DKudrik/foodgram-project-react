@@ -1,10 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.db import models
 from django.forms import ModelForm
-from django.utils.translation import gettext_lazy as _
 
-from .models import Recipe
+from .models import Recipe, Tag
 
 
 class RecipeForm(ModelForm):
@@ -14,9 +11,9 @@ class RecipeForm(ModelForm):
             "title",
             "image",
             "description",
-            "ingredients",
             "cooking_time",
         ]
-        labels = {
-            "group": _("Выберите группу(при необходимости)"),
-        }
+        tags = forms.ModelMultipleChoiceField(
+            queryset=Tag.objects.all(),
+            widget=forms.CheckboxSelectMultiple
+        )

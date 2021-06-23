@@ -1,4 +1,4 @@
-from recipes.models import Ingredient
+from apps.recipes.models import Ingredient
 from django.core.management.base import BaseCommand
 
 import csv
@@ -6,7 +6,7 @@ import csv
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        with open('recipes/data/ingredients.csv') as file:
+        with open('templates/ingredients/ingredients.csv') as file:
             file_reader = csv.reader(file)
             for row in file_reader:
                 name, unit = row
