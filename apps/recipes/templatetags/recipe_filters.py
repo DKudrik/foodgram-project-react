@@ -32,9 +32,31 @@ def in_favorites(user, recipe):
 
 
 @register.filter
-def in_purchases(user, recipe):
+def in_purchases_auth(user, recipe):
     """Check if a recipe is in purchases."""
     return recipe.purchases.filter(user=user).exists()
+
+
+@register.filter
+def in_purchases_not_auth(request, recipe_id):
+    """Check if a recipe is in purchases for an unauthorized user."""
+    user_ip = request.META['REMOTE_ADDR']
+    recipe_id = recipe_id
+    if request.session.get(user_ip):
+        if str(recipe_id) in list(set(request.session[user_ip])):
+            return True
+    return False
+
+
+@register.filter
+def count_unauth_purchases(request):
+    """
+    Count number of recipes in a shoplist of an unauthorized user.
+    """
+    user_ip = request.META['REMOTE_ADDR']
+    if request.session.get(user_ip):
+        return len(list(set(request.session[user_ip])))
+    return 0
 
 
 @register.filter

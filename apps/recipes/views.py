@@ -186,29 +186,47 @@ def profile_favorites(request, username):
     return render(request, 'favorite.html', context)
 
 
-@login_required
 @api_view(['POST'])
 def add_purchase(request):
-    recipe = get_object_or_404(Recipe, id=request.data.get('id'))
-    if Purchase.objects.filter(user=request.user, recipe=recipe).exists():
-        return JsonResponse({'success': False})
-    Purchase.objects.get_or_create(user=request.user, recipe=recipe)
+    id = request.data.get('id')
+    recipe = get_object_or_404(Recipe, id=id)
+    if request.user.is_authenticated:
+        if Purchase.objects.filter(user=request.user, recipe=recipe).exists():
+            return JsonResponse({'success': False})
+        Purchase.objects.get_or_create(user=request.user, recipe=recipe)
+        return JsonResponse({'success': True})
+    user_ip = request.META['REMOTE_ADDR']
+    if request.session.get(user_ip):
+        if id in request.session[user_ip]:
+            return JsonResponse({'success': False})
+        request.session[user_ip] += [id]
+        return JsonResponse({'success': True})
+    request.session[user_ip] = [id]
     return JsonResponse({'success': True})
 
 
-@login_required
 @api_view(['DELETE'])
 def remove_purchase(request, recipe_id):
-    recipe = get_object_or_404(Recipe, id=recipe_id)
-    purchase = Purchase.objects.filter(user=request.user, recipe=recipe)
-    if purchase.exists():
-        purchase.delete()
-        return JsonResponse({'success': True})
+    """Remove a recipe from shoplist when a user not in a shoplist"""
+    if request.user.is_authenticated:
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+        purchase = Purchase.objects.filter(user=request.user, recipe=recipe)
+        if purchase.exists():
+            purchase.delete()
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
+    user_ip = request.META['REMOTE_ADDR']
+    if request.session.get(user_ip):
+        if str(recipe_id) in request.session[user_ip]:
+            request.session[user_ip] = list(set(request.session[user_ip]))
+            request.session[user_ip].remove(str(recipe_id))
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
     return JsonResponse({'success': False})
 
 
-@login_required
 def remove_purchase_list(request, recipe_id):
+    """Remove a recipe from shoplist when a user in a shoplist"""
     recipe = get_object_or_404(Recipe, id=recipe_id)
     purchase = Purchase.objects.filter(user=request.user, recipe=recipe)
     purchase.delete()
@@ -218,6 +236,22 @@ def remove_purchase_list(request, recipe_id):
 @login_required
 def profile_purchases(request, username):
     recipes = Recipe.objects.filter(purchases__user__username=username)
+    paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'shopList.html', {
+        'page': page,
+        'paginator': paginator,
+        'recipes': recipes,
+    })
+
+
+def not_auth_purchases(request):
+    user_ip = request.META['REMOTE_ADDR']
+    recipe_pks = []
+    if request.session.get(user_ip):
+        recipe_pks = request.session[user_ip]
+    recipes = Recipe.objects.filter(pk__in=recipe_pks)
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

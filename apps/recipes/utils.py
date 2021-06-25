@@ -86,8 +86,15 @@ def edit_recipe(request, form, instance):
 
 def collect_purchases_ingredients(request):
     """Collect ingredients from recipes in purchases and add them in a dict."""
-    recipes = Recipe.objects.filter(
-        purchases__user=request.user)
+    if request.user.is_authenticated:
+        recipes = Recipe.objects.filter(
+            purchases__user=request.user)
+    else:
+        user_ip = request.META['REMOTE_ADDR']
+        recipe_pks = []
+        if request.session.get(user_ip):
+            recipe_pks = request.session[user_ip]
+            recipes = Recipe.objects.filter(pk__in=recipe_pks)
     shoplist = {}
     for recipe in recipes:
         ingredients = recipe.ingredients.values_list('name', 'unit')

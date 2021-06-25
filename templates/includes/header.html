@@ -1,3 +1,5 @@
+{% load recipe_filters %}
+
 {% with section=request.resolver_match.url_name %}
   <header class="header">
     <nav class="nav">
@@ -6,13 +8,21 @@
           {% include 'includes/nav.html' %}
         {% else %}
           <ul class="nav__items list">
-            <li class="nav__item nav__item_{% if section == 'index' %}active{% endif %}"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-            <li class="nav__item nav__item_{% if section == 'profile_purchases' %}active{% endif %}"><a href="{% url 'profile_purchases' request.user %}" class="nav__link link">Список покупок <span
-              class="badge badge_style_blue nav__badge" id="counter">{{ request.user.purchases.count }}</span></a></li>
+            <li class="nav__item nav__item_{% if section == 'index' %}active{% endif %}">
+              <a href="{% url 'index' %}" class="nav__link link">Рецепты</a>
+            </li>
+            <li class="nav__item nav__item_{% if section == 'profile_purchases' %}active{% endif %}">
+              <a href="{% url 'not_auth_purchases' %}" class="nav__link link">Список покупок <span
+              class="badge badge_style_blue nav__badge" id="counter">{{ request|count_unauth_purchases }}</span></a>
+            </li>
           </ul>
           <ul class="nav__items list">
-            <li class="nav__item nav__item_{% if section == 'login' %}active{% endif %}"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
-            <li class="nav__item nav__item"><a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+            <li class="nav__item nav__item_{% if section == 'login' %}active{% endif %}">
+              <a href="{% url 'login' %}" class="nav__link link">Войти</a>
+            </li>
+            <li class="nav__item nav__item">
+              <a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a>
+            </li>
           </ul>
         {% endif %}
       </div>

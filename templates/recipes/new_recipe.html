@@ -13,11 +13,11 @@
     action="{% if recipe %}  {% url 'recipe_edit' recipe.id %} {% else %} {% url 'new_recipe' %} {% endif%}">
     {% csrf_token %}
     {% if form.errors %}
-    {% for error in form.non_field_errors %}
-    <div class="form__group">
-      <span class="form__error">{{ error|escape }}</span>
-    </div>
-    {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="form__group">
+          <span class="form__error">{{ error|escape }}</span>
+        </div>
+      {% endfor %}
     {% endif %}
     <div class="form__group">
       <label for="{{ form.title.id_for_label }}" class="form__label">{{ form.title.label }}</label>
