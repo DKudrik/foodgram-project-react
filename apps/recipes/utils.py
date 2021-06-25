@@ -19,6 +19,9 @@ reportlab.rl_config.TTFSearchPath.append(
     str(settings.BASE_DIR) + '/assets/reportlabs/fonts')
 
 
+TAGG_LIST = ['завтрак', 'обед', 'ужин']
+
+
 def get_ingredients(request):
     """Get ingredients from POST request and search them in DB."""
     ingredients = {}
@@ -42,6 +45,13 @@ def get_tags(request):
         if key in TAGS and name == 'on':
             tags.append(Tag.objects.get(name=TAGS[key]))
     return tags
+
+
+def create_tags_list(request):
+    tags_list = request.GET.getlist('tags')
+    if not tags_list:
+        tags_list = TAGG_LIST
+    return tags_list
 
 
 def save_recipe(request, form):
@@ -68,6 +78,12 @@ def save_recipe(request, form):
         return recipe
 
 
+def edit_recipe(request, form, instance):
+    with transaction.atomic():
+        IngredientRecipe.objects.filter(recipe=instance).delete()
+        return save_recipe(request, form)
+
+
 def collect_purchases_ingredients(request):
     """Collect ingredients from recipes in purchases and add them in a dict."""
     recipes = Recipe.objects.filter(
@@ -80,7 +96,7 @@ def collect_purchases_ingredients(request):
             title = ingredients[num][0]
             unit = ingredients[num][1]
             quantity = amount[num]
-            if title in shoplist.keys():
+            if title in shoplist:
                 shoplist[title] = [shoplist[title][0] + quantity, unit]
             else:
                 shoplist[title] = [quantity, unit]

@@ -19,14 +19,16 @@
         style="text-decoration:none; color: black">{{ recipe.author }}</a></p>
     </div>
     <div class="card__footer">
-      {% if request.user|in_purchases:recipe %}
-        <button class="button button_style_light-blue-outline" name="purchases">
-          <span class="icon-check button__icon"></span> Рецепт добавлен
-        </button>
-      {% else %}
-        <button class="button button_style_light-blue" name="purchases" data-out>
-          <span class="icon-plus button__icon"></span>Добавить в покупки
-        </button>
+      {% if user.is_authenticated %}
+        {% if request.user|in_purchases:recipe %}
+          <button class="button button_style_light-blue-outline" name="purchases">
+            <span class="icon-check button__icon"></span> Рецепт добавлен
+          </button>
+        {% else %}
+          <button class="button button_style_light-blue" name="purchases" data-out>
+            <span class="icon-plus button__icon"></span>Добавить в покупки
+          </button>
+        {% endif %}
       {% endif %}
       {% if user.is_authenticated %}
         {% if request.user|in_favorites:recipe %}

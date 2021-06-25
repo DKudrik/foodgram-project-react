@@ -8,10 +8,10 @@ class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
         fields = [
-            "title",
-            "image",
-            "description",
-            "cooking_time",
+            'title',
+            'image',
+            'description',
+            'cooking_time',
             'tags'
         ]
         tags = forms.ModelMultipleChoiceField(

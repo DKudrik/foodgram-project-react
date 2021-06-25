@@ -101,8 +101,7 @@
     <div class="form__group">
       <span class="form__label">Загрузить фото</span>
       <div class="form__field-group">
-        <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">{{
-        form.image.value|default_if_none:'' }}
+        <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}">{{ form.image.value }}
         <span class="form__error">{{ form.image.errors }}</span>
       </div>
     </div>
@@ -122,9 +121,9 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static './js/config/config.js' %}"></script>
-<script src="{% static './js/components/Header.js' %}"></script>
-<script src="{% static './js/utils/debouncing.js' %}"></script>
-<script src="{% static './js/api/Api.js' %}"></script>
-<script src="{% static 'formRecipe.js' %}"></script>
+  <script src="{% static './js/config/config.js' %}"></script>
+  <script src="{% static './js/components/Header.js' %}"></script>
+  <script src="{% static './js/utils/debouncing.js' %}"></script>
+  <script src="{% static './js/api/Api.js' %}"></script>
+  <script src="{% static 'formRecipe.js' %}"></script>
 {% endblock %}

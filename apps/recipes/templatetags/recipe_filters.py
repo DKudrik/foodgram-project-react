@@ -1,5 +1,5 @@
 from django import template
-from apps.recipes.models import Favourites, Follow, Purchase, Tag
+from apps.recipes.models import Tag
 
 register = template.Library()
 
@@ -22,25 +22,25 @@ def counter(author):
 @register.filter
 def follow_exists(author, user):
     """Check subscription."""
-    return Follow.objects.filter(author=author, user=user).exists()
+    return author.following.filter(user=user).exists()
 
 
 @register.filter
 def in_favorites(user, recipe):
     """Check if a recipe is in favorites."""
-    return Favourites.objects.filter(user=user, recipe=recipe).exists()
+    return recipe.favourites.filter(user=user).exists()
 
 
 @register.filter
 def in_purchases(user, recipe):
     """Check if a recipe is in purchases."""
-    return Purchase.objects.filter(user=user, recipe=recipe).exists()
+    return recipe.purchases.filter(user=user).exists()
 
 
 @register.filter
 def get_filter_tags(request, choosen_tag):
     """
-    Check incoming tag for sorting
+    Check incoming tag for sorting.
     In case there is not tag - all the tags are applied.
     """
     new_request = request.GET.copy()
@@ -50,6 +50,7 @@ def get_filter_tags(request, choosen_tag):
         for tag in all_tags:
             tags_list.append(tag.name)
         if choosen_tag.name in tags_list:
+            tags_list = set(tags_list)
             tags_list.remove(choosen_tag.name)
         new_request.setlist('tags', tags_list)
         return new_request.urlencode()
@@ -57,6 +58,7 @@ def get_filter_tags(request, choosen_tag):
         tags_list.append(choosen_tag.name)
         new_request.setlist('tags', tags_list)
     else:
+        tags_list = set(tags_list)
         tags_list.remove(choosen_tag.name)
         new_request.setlist('tags', tags_list)
     return new_request.urlencode()

@@ -1,23 +1,19 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db import transaction
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .forms import RecipeForm
-from .models import (Favourites, Follow, Ingredient, IngredientRecipe,
-                     Purchase, Recipe, Tag, User)
+from .models import Favourite, Follow, Ingredient, Purchase, Recipe, Tag, User
 from .serializers import IngredientSerializer
-from .utils import save_recipe, create_pdf
-from django.conf import settings
+from .utils import create_pdf, create_tags_list, edit_recipe, save_recipe
 
 
 def index(request):
-    tags_list = request.GET.getlist('tags')
-    if not tags_list:
-        tags_list = ['завтрак', 'обед', 'ужин']
+    tags_list = create_tags_list(request)
     all_tags = Tag.objects.all()
     recipes = Recipe.objects.filter(
         tags__name__in=tags_list
@@ -73,12 +69,6 @@ def recipe_edit(request, recipe_id):
     })
 
 
-def edit_recipe(request, form, instance):
-    with transaction.atomic():
-        IngredientRecipe.objects.filter(recipe=instance).delete()
-        return save_recipe(request, form)
-
-
 @login_required
 def recipe_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -91,9 +81,7 @@ def recipe_delete(request, recipe_id):
 
 @login_required
 def profile(request, username):
-    tags_list = request.GET.getlist('tags')
-    if not tags_list:
-        tags_list = ['завтрак', 'обед', 'ужин']
+    tags_list = create_tags_list(request)
     all_tags = Tag.objects.all()
     recipes = Recipe.objects.filter(
         tags__name__in=tags_list, author__username=username
@@ -160,10 +148,10 @@ def search_ingredients(request):
 @login_required
 @api_view(['POST'])
 def add_favorite(request):
-    recipe = get_object_or_404(Recipe, id=request.data['id'])
-    if Favourites.objects.filter(user=request.user, recipe=recipe).exists():
+    recipe = get_object_or_404(Recipe, id=request.data.get('id'))
+    if Favourite.objects.filter(user=request.user, recipe=recipe).exists():
         return JsonResponse({'success': False})
-    Favourites.objects.get_or_create(user=request.user, recipe=recipe)
+    Favourite.objects.get_or_create(user=request.user, recipe=recipe)
     return JsonResponse({'success': True})
 
 
@@ -171,18 +159,14 @@ def add_favorite(request):
 @api_view(['DELETE'])
 def remove_favorite(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    favorite = Favourites.objects.filter(user=request.user, recipe=recipe)
-    if favorite.exists():
-        favorite.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+    favorite = Favourite.objects.filter(user=request.user, recipe=recipe)
+    favorite.delete()
+    return JsonResponse({'success': True})
 
 
 @login_required
 def profile_favorites(request, username):
-    tags_list = request.GET.getlist('tags')
-    if not tags_list:
-        tags_list = ['завтрак', 'обед', 'ужин']
+    tags_list = create_tags_list(request)
     all_tags = Tag.objects.all()
     recipes = Recipe.objects.filter(
         tags__name__in=tags_list, favourites__user__username=username
@@ -205,7 +189,7 @@ def profile_favorites(request, username):
 @login_required
 @api_view(['POST'])
 def add_purchase(request):
-    recipe = get_object_or_404(Recipe, id=request.data['id'])
+    recipe = get_object_or_404(Recipe, id=request.data.get('id'))
     if Purchase.objects.filter(user=request.user, recipe=recipe).exists():
         return JsonResponse({'success': False})
     Purchase.objects.get_or_create(user=request.user, recipe=recipe)
@@ -246,11 +230,3 @@ def profile_purchases(request, username):
 
 def purchases_download(request):
     return create_pdf(request)
-
-
-def page_not_found(request, exception):
-    return render(request, 'errors/404.html', {'path': request.path}, status=404)
-
-
-def server_error(request):
-    return render(request, 'errors/500.html', status=500)

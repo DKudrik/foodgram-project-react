@@ -8,16 +8,16 @@ User = get_user_model()
 
 class Tag(models.Model):
     """Describes a tag object."""
-    name = models.CharField(max_length=255, verbose_name='tagname')
+    name = models.CharField(max_length=255, verbose_name='Имя')
     color = models.CharField(max_length=100, blank=True,
-                             verbose_name='tagcolor', default='')
+                             verbose_name='Цвет', default='')
+
+    class Meta:
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
 
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name = "Тег"
-        verbose_name_plural = "Теги"
 
 
 class Ingredient(models.Model):
@@ -31,12 +31,12 @@ class Ingredient(models.Model):
         verbose_name='Ед. измерения',
     )
 
+    class Meta:
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
+
     def __str__(self):
         return f'{self.name}, {self.unit}'
-
-    class Meta:
-        verbose_name = "Ингредиент"
-        verbose_name_plural = "Ингредиенты"
 
 
 class Recipe(models.Model):
@@ -47,28 +47,28 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="recipes",
-        verbose_name="Автор",
+        related_name='recipes',
+        verbose_name='Автор',
     )
     title = models.CharField(
         max_length=256,
         blank=False,
-        verbose_name="Название",
+        verbose_name='Название',
     )
     image = models.ImageField(
-        upload_to="kartinki/",
+        upload_to='kartinki/',
         blank=False,
         null=True,
-        verbose_name="Изображение",
+        verbose_name='Изображение',
     )
     description = models.TextField(
         blank=False,
-        verbose_name="Описание",
+        verbose_name='Описание',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientRecipe',
-        related_name='ingredients',
+        related_name='recipes',
         verbose_name='Ингредиенты',
     )
     cooking_time = models.PositiveIntegerField(
@@ -78,7 +78,7 @@ class Recipe(models.Model):
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="Дата публикации",
+        verbose_name='Дата публикации',
     )
     tags = models.ManyToManyField(
         Tag,
@@ -87,41 +87,41 @@ class Recipe(models.Model):
     )
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
 
+    class Meta:
+        ordering = ('-pub_date', )
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+
     def __str__(self):
         return (f'{self.author} : {self.title}')
-
-    class Meta:
-        ordering = ("-pub_date", )
-        verbose_name = "Рецепт"
-        verbose_name_plural = "Рецепты"
 
 
 class IngredientRecipe(models.Model):
     """
-    Serves to connect a recipe oject with an ingredient object
-    via Many2Many relationship. Add an additional field 'quantity'.
+    Serves to connect a recipe oиject with an ingredient object
+    via Many2Many relationship. Adds an additional field 'quantity'.
     """
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.CASCADE,
                                    related_name='ingredientrecipe',
-                                   verbose_name='ингредиент')
+                                   verbose_name='Ингредиент')
     recipe = models.ForeignKey(Recipe,
                                on_delete=models.CASCADE,
                                related_name='ingredientrecipe',
-                               verbose_name='ингредиент')
+                               verbose_name='Ингредиент')
     quantity = models.DecimalField(
-        max_digits=6,
+        max_digits=8,
         decimal_places=1,
         verbose_name='Количество',
         validators=[MinValueValidator(0.1)]
     )
 
+    class Meta:
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецепте'
+
     def __str__(self):
         return (self.ingredient.name)
-
-    class Meta:
-        verbose_name = "Ингредиент в рецепте"
-        verbose_name_plural = "Ингредиенты в рецепте"
 
 
 class Follow(models.Model):
@@ -129,18 +129,15 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="follower",
-        verbose_name="Подписчик",
+        related_name='follower',
+        verbose_name='Подписчик',
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="following",
-        verbose_name="Автор",
+        related_name='following',
+        verbose_name='Автор',
     )
-
-    def __str__(self):
-        return (f'Подписчик: {self.user}, Автор: {self.author}')
 
     class Meta:
         constraints = [
@@ -149,9 +146,12 @@ class Follow(models.Model):
                 name='user_author'
             )
         ]
-        ordering = ("author", )
+        ordering = ('author', )
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return (f'Подписчик: {self.user}, Автор: {self.author}')
 
 
 class Purchase(models.Model):
@@ -159,18 +159,15 @@ class Purchase(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="purchases",
-        verbose_name="Пользователь",
+        related_name='purchases',
+        verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="purchases",
-        verbose_name="Рецепт",
+        related_name='purchases',
+        verbose_name='Рецепт',
     )
-
-    def __str__(self):
-        return (f'Пользователь: {self.user}, Рецепт: {self.recipe}')
 
     class Meta:
         verbose_name = 'Покупка'
@@ -182,24 +179,24 @@ class Purchase(models.Model):
             )
         ]
 
+    def __str__(self):
+        return (f'Пользователь: {self.user}, Рецепт: {self.recipe}')
 
-class Favourites(models.Model):
+
+class Favourite(models.Model):
     """Describes a user's favourite recipes."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="favourites",
-        verbose_name="Пользователь",
+        related_name='favourites',
+        verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="favourites",
-        verbose_name="Рецепт",
+        related_name='favourites',
+        verbose_name='Рецепт',
     )
-
-    def __str__(self):
-        return (f'Пользователь: {self.user}, Рецепт: {self.recipe}')
 
     class Meta:
         verbose_name = 'Избранное'
@@ -210,3 +207,6 @@ class Favourites(models.Model):
                 name='unique_favourite'
             )
         ]
+
+    def __str__(self):
+        return (f'Пользователь: {self.user}, Рецепт: {self.recipe}')
