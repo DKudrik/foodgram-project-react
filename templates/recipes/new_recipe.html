@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}{% if recipe %} Редактирование рецепта {% else %} Создание рецепта {% endif%}{% endblock %}
+{% block title %}{% if recipe %} Редактирование рецепта {% else %} Создание рецепта {% endif %}{% endblock %}
 {% load static %}
 {% load user_filters %}
 
 {% block content %}
 
 <div class="main__header">
-  <h1 class="main__title">{% if recipe %} Редактирование рецепта {% else %} Создание рецепта {% endif%}</h1>
+  <h1 class="main__title">{% if recipe %} Редактирование рецепта {% else %} Создание рецепта {% endif %}</h1>
 </div>
 <div class="form-container">
   <form class="form" method="post" enctype="multipart/form-data"

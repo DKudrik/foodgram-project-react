@@ -1,4 +1,5 @@
 from django import template
+
 from apps.recipes.models import Tag
 
 register = template.Library()
