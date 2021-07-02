@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Мои подписки{% endblock %}
 {% load static %}
+{% load thumbnail %}\
 {% load recipe_filters %}
 {% block styles %} <link rel="stylesheet" href="{% static './pages/myFollow.css' %}"> {% endblock %}
 
@@ -9,37 +10,43 @@
   <div class="main__header">
     <h1 class="main__title">Мои подписки</h1>
   </div>
-  {% for following in page %}
-    <div class="card-list">
+  <div class="card-list">
+    {% for following in page %}
       <div class="card-user" data-author="{{ recipe.author }}">
-      <div class="card-user__header">
-        <h2 class="card-user__title">{{ following.username }}</a></h2>
+        <div class="card-user__header">
+          <h2 class="card-user__title">{{ following.username }}</h2>
+        </div>
+       <div class="card-user__body">
+          <ul class="card-user__items">
+            {% for recipe in following.recipes.all|slice:":3" %}
+              <li class="card-user__item">
+                <div class="recipe">
+                  <h3>
+                    <a class="recipe__title" href="{% url 'recipe' recipe.id %}" style="text-decoration:none; color: black" target="_blank">{{ recipe.title }}</a>
+                  </h3>
+                  {% thumbnail recipe.image "1400x1400" upscale=True as im %}
+                    <a href="{% url 'recipe' recipe.id %}" class="link" target="_blank"><img src="{{ im.url }}"
+                      alt="{{ recipe.title }}" class="recipe__image"></a>
+                  {% endthumbnail %}
+                  <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
+                </div>
+              </li>
+            {% endfor %}
+            {% if following.recipes.count > 3 %}
+              <li class="card-user__item">
+                <a href="{% url 'profile' following.username %}" class="card-user__link link">Еще {{ following|counter }} ...</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="card-user__footer">
+          <button class="button button_style_light-blue button_size_auto" name="subscribe">
+            <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' following.username %}">Отписаться</a>
+          </button>
+        </div>
       </div>
-      <div class="card-user__body">
-        <ul class="card-user__items">
-          {% for recipe in following.recipes.all|slice:":3" %}
-            <li class="card-user__item">
-              <div class="recipe">
-                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe__image">
-                <h3 class="recipe__title" >{{ recipe.title }}</h3>
-                <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
-              </div>
-            </li>
-          {% endfor %}
-          {% if following.recipes.count > 3 %}
-            <li class="card-user__item">
-              <a href="{% url 'profile' following.username %}" class="card-user__link link">Еще {{ following|counter }} ...</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-      <div class="card-user__footer">
-        <button class="button button_style_light-blue button_size_auto" name="subscribe">
-          <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' following.username %}">Отписаться</a>
-        </button>
-      </div>
-    </div>
-  {% endfor %} 
+    {% endfor %} 
+  </div>
 {% endblock %}
 
 {% block scripts %}
