@@ -8,12 +8,6 @@
           <span class="icon-left"></span>
         </a>
       </li>
-    {% else %}
-      <li class="pagination__item">
-        <a class="pagination__link link" href="#" tabindex="-1" aria-disabled="true">
-          <span class="icon-left icon-left_inactive"></span>
-        </a>
-      </li>
     {% endif %}
 
     {% for i in paginator.page_range %}
@@ -28,12 +22,6 @@
       <li class="pagination__item-item">
         <a class="pagination__link link" href="?{% url_replace page=page.next_page_number %}">
           <span class="icon-right"></span>
-        </a>
-      </li>
-    {% else %}
-      <li class="pagination__item-item">
-        <a class="pagination__link link" href="#" tabindex="-1" aria-disabled="true">
-          <span class="icon-right icon-right_inactive" ></span>
         </a>
       </li>
     {% endif %}
