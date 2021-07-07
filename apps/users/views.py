@@ -1,13 +1,12 @@
 from django.contrib.auth import authenticate, login
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import FormView
 
 from .forms import CreationForm
 
 
-class SignUp(CreateView):
+class SignUp(FormView):
     form_class = CreationForm
-    success_url = reverse_lazy('/')
+    success_url = '/'
     template_name = 'signup.html'
 
     def form_valid(self, form):
