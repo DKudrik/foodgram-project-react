@@ -1,0 +1,21 @@
+# Ignore all
+**
+
+# Allowed
+!apps/
+!assets/
+!env/
+!foodgram/
+!media/
+!media_value/
+!nginx/
+!static/
+!static_value/
+!templates/
+!manage.py
+!requirements.txt
+
+# Override allowed
+__pychace__/
+*.py[cod]
+*$py.class

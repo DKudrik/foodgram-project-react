@@ -1,0 +1,10 @@
+﻿SECRET_KEY=c$2t7c=8&*fx^#^5j&nsk*rl5ivt)fubo!%)4byoixoy%6pd^d
+EMAIL_USER= deniskudrik@gmail.com
+EMAIL_PASS=itsebjxoqjgczsvn
+
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=puser # логин для подключения к базе данных
+POSTGRES_PASSWORD=13579 # пароль для подключения к БД (установите свой)
+DB_HOST=db # название сервиса (контейнера)
+DB_PORT=5432 # порт для подключения к БД 
