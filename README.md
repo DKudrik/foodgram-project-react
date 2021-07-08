@@ -1,4 +1,4 @@
-![YamDB workflow](https://github.com/DKudrik/yamdb_final/actions/workflows/main.yml/badge.svg)
+![YamDB workflow](https://github.com/DKudrik/foodgram/actions/workflows/main.yml/badge.svg)
 
 
 # foodgram project
