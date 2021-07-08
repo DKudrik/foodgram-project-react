@@ -47,14 +47,14 @@
             <li class="single-card__item">
               <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
                 <a style="color: inherit; text-decoration:none;"
-                  href="{% url 'profile_unfollow' recipe.author.username %}">Отписаться</a>
+                  href="{% url 'profile_unfollow' %}">Отписаться</a>
               </button>
             </li>
           {% else %}
             <li class="single-card__item">
               <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
                 <a style="color: inherit; text-decoration:none;"
-                  href="{% url 'profile_follow' recipe.author.username %}">Подписаться на автора</a>
+                  href="{% url 'profile_follow' %}">Подписаться на автора</a>
               </button>
            </li>
           {% endif %}
