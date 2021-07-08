@@ -114,22 +114,22 @@ def add_grapichs(pdf, font_size):
     """Add logo and horizontal stripes for better reading."""
     pdf.setFont('Vlashu', 20)
     pdf.setFillColor(orange)
-    pdf.circle(150*mm, 8*mm, 3*mm, fill=1)
+    pdf.circle(150 * mm, 8 * mm, 3 * mm, fill=1)
     pdf.setFillColor(green)
-    pdf.circle(155*mm, 8*mm, 3*mm, fill=1)
+    pdf.circle(155 * mm, 8 * mm, 3 * mm, fill=1)
     pdf.setFillColor(purple)
-    pdf.circle(160*mm, 8*mm, 3*mm, fill=1)
+    pdf.circle(160 * mm, 8 * mm, 3 * mm, fill=1)
     pdf.setFillColor(grey)
-    pdf.drawString(165*mm, 10*mm, 'foodgram')
-    y = 25*mm
-    dy = font_size*mm
+    pdf.drawString(165 * mm, 10 * mm, 'foodgram')
+    y = 25 * mm
+    dy = font_size * mm
     for i in range(100):
         for color in (lightgrey, white):
             pdf.setFillColor(color)
-            pdf.rect(0, y, 210*mm, dy, stroke=0, fill=1)
+            pdf.rect(0, y, 210 * mm, dy, stroke=0, fill=1)
             y += dy
     pdf.setFillColor(white)
-    pdf.rect(0, 275*mm, 210*mm, 297*mm, stroke=0, fill=1)
+    pdf.rect(0, 275 * mm, 210 * mm, 297 * mm, stroke=0, fill=1)
     y += dy
 
 
@@ -141,9 +141,9 @@ def create_pdf(request):
     pdf = canvas.Canvas(buffer)
     font_size = 6
     add_grapichs(pdf, font_size)
-    pdf.setFont('RussianPunk', font_size*mm)
-    x = 15*mm
-    y = 25*mm
+    pdf.setFont('RussianPunk', font_size * mm)
+    x = 15 * mm
+    y = 25 * mm
     pdf.setFillColor(black)
     for key in shoplist:
         pdf.drawString(x, y, key)
@@ -152,13 +152,13 @@ def create_pdf(request):
         x += 60
         pdf.drawString(x, y, shoplist[key][1])
         x -= 380
-        y += font_size*mm
-        if y > 280*mm:
-            y = 25*mm
+        y += font_size * mm
+        if y > 280 * mm:
+            y = 25 * mm
             pdf.showPage()
             add_grapichs(pdf, font_size)
             pdf.setFillColor(black)
-            pdf.setFont('RussianPunk', font_size*mm)
+            pdf.setFont('RussianPunk', font_size * mm)
     pdf.setTitle('Shoplist')
     pdf.showPage()
     pdf.save()
