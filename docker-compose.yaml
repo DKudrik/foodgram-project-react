@@ -13,14 +13,14 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     restart: always
     env_file:
-      - ~/.env
+      - /uxubisg/.env
   web:
     image: uxubisg/foodgram:latest
     restart: always
     depends_on:
       - db
     env_file:
-      - ~/.env
+      - /uxubisg/.env
     volumes: 
       - static_value:/code/static
       - media_value:/code/media/
