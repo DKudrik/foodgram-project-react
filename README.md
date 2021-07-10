@@ -1,15 +1,15 @@
 ![foodgram workflow](https://github.com/DKudrik/foodgram-project/actions/workflows/main.yml/badge.svg)
 
 site admin:
-user: admin
-password: develop
+  user: admin
+  password: develop
 
 # foodgram project
 
 Visit the project at foodgram-project.gq (or http://84.201.177.46/)
 
 
-Foodgram is a project that features plenty of recipes of different cuisine
+Foodgram is a project that features plenty of recipes of different cuisines
 
 ### Prerequisites
 
