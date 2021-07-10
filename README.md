@@ -1,9 +1,9 @@
-![YamDB workflow](https://github.com/DKudrik/foodgram/actions/workflows/main.yml/badge.svg)
+![foodgram workflow](https://github.com/DKudrik/foodgram/actions/workflows/main.yml/badge.svg)
 
 
 # foodgram project
 
-Visit the project at foodgram.gq (or http://130.193.56.221/)
+Visit the project at foodgram-project.gq (or http://84.201.177.46/)
 
 
 Foodgram is a project that features plenty of recipes of different cuisine
@@ -15,19 +15,14 @@ Install Docker
 ### Installing
 
 To start a project:
-1. Go to a 'amdb_final' folder
+1. Go to a 'foodgram-project' folder
 2. Type 'docker-compose up' in terminal
-3. Go to api_yamdb container and aplly migrations
-* To get into a container with postgres DB or with api_yamdb project open a new terminal tab 
-   and type 'docker ps', then choose ID of the container and type 'docker exec -it <container_id> bash'
-*  To fill a DB with test data you can use fixtures.json file:
-    - Copy test data to an api_yamdb container with command 'docker cp fixtures.json <container_id>:code/' 
-    - Being in the container open shell 'python3 manage.py shell'
-    - type 'from django.contrib.contenttypes.models import ContentType'
-    - type 'ContentType.objects.all().delete()'
-    - type 'quit()'
-    - type 'python manage.py loaddata fixtures.json'
-*  To create a superuser in api_yamdb container type 'python manage.py createsuper'
+3. Aplly migrations:
+  * docker-compose exec web python manage.py migrate --noinput
+4. Create superuser
+  * docker-compose exec web python manage.py createsuperuser
+5. Collect static
+  * docker-compose exec web python manage.py collectstatic --no-input
 
 ## Built With
 
@@ -45,7 +40,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Denis Kudrik** - *Initial work* - [DKudrik](https://github.com/DKudrik/infra_sp2)
+* **Denis Kudrik** - *Initial work* - [DKudrik](https://github.com/DKudrik/foodgram-project)
 
 ## License
 
