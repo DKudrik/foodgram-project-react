@@ -15,15 +15,15 @@
   {% if request.user != author %}
     {% if author|follow_exists:user %}
       <button class="button button_style_light-blue button_size_auto" name="subscribe">
-        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' %}">Отписаться</a>
+        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' recipe.author %}">Отписаться</a>
       </button>
     {% else %}
       <button class="button button_style_light-blue button_size_auto" name="subscribe">
         <a style="color: inherit; text-decoration:none;" 
-        href="{% url 'profile_follow' %}">Подписаться на автора</a>
+        href="{% url 'profile_follow' recipe.author %}">Подписаться на автора</a>
       </button>
     {% endif %} 
-  {% endif %}
+  {% endif %} 
 </div>
 <div class="card-list">
   {% for recipe in page %}
