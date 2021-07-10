@@ -1,5 +1,8 @@
-![foodgram workflow](https://github.com/DKudrik/foodgram/actions/workflows/main.yml/badge.svg)
+![foodgram workflow](https://github.com/DKudrik/foodgram-project/actions/workflows/main.yml/badge.svg)
 
+site admin:
+user: admin
+password: develop
 
 # foodgram project
 
