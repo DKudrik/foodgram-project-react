@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %} {{ recipe.title }} {% endblock %}
 {% load static %}
-{% block styles %}
-<link rel="stylesheet" href="{% static './pages/single.css' %}">{% endblock %}
 {% load recipe_filters %}
+{% block styles %}
+  <link rel="stylesheet" href="{% static './pages/single.css' %}">
+{% endblock %}
 {% block content %}
   {% csrf_token %}
   <div class="single-card" data-id="{{ recipe.id }}" data-author=" {{ recipe.author.id }}">
@@ -18,7 +19,7 @@
           {% if request.user|in_favorites:recipe %}
             <div class="single-card__favorite">
               <button class="button button_style_none" name="favorites" >
-                <span class="icon-favorite icon-favorite_big"></span>
+                <span class="icon-favorite icon-favorite_big_active"></span>
               </button>
               <div class="single-card__favorite-tooltip tooltip">Убрать из избранного</div>
             </div>
