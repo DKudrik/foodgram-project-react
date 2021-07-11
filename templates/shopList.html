@@ -10,8 +10,8 @@
     <h1 class="main__title">Список покупок</h1>
   </div>
   <div class="card-list card-list_column">
-    {% for recipe in page %}
-      <ul class="shopping-list">
+    <ul class="shopping-list">
+      {% for recipe in page %}
         <li class="shopping-list__item" data-id="{{ recipe.id }}">
           <div class="recipe recipe_reverse">
             <a href="{% url 'recipe' recipe.id %}" class="link" target="_blank"><img src="{{ recipe.image.url }}"
@@ -25,8 +25,8 @@
           </div>
           <a href="{% url 'remove_purchase_list' recipe.id %}" class="shopping-list__button link">Удалить</a>
         </li>
-      </ul>
-    {% endfor %}
+      {% endfor %}
+    </ul>
     <a href="{% url 'purchases_download' %}"><button class="button button_style_blue">Скачать список</button></a>
   </div>
 {% endblock %}

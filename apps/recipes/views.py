@@ -236,12 +236,10 @@ def remove_purchase_list(request, recipe_id):
 @login_required
 def profile_purchases(request, username):
     recipes = Recipe.objects.filter(purchases__user__username=username)
-    paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    #paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
+    #page_number = request.GET.get('page')
+    #page = paginator.get_page(page_number)
     return render(request, 'shopList.html', {
-        'page': page,
-        'paginator': paginator,
         'recipes': recipes,
     })
 
