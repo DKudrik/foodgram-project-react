@@ -230,8 +230,8 @@ def remove_purchase_list(request, recipe_id):
     user_ip = request.META['REMOTE_ADDR']
     if request.session.get(user_ip):
         recipe_pks = request.session[user_ip]
-    if recipe_id in recipe_pks:
-        recipe_pks.remove(recipe_id)
+        if recipe_id in recipe_pks:
+            recipe_pks.remove(recipe_id)
     recipe = get_object_or_404(Recipe, id=recipe_id)
     purchase = Purchase.objects.filter(recipe=recipe)
     purchase.delete()
@@ -252,12 +252,7 @@ def not_auth_purchases(request):
     if request.session.get(user_ip):
         recipe_pks = request.session[user_ip]
     recipes = Recipe.objects.filter(pk__in=recipe_pks)
-    paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
     return render(request, 'shopList.html', {
-        'page': page,
-        'paginator': paginator,
         'recipes': recipes,
     })
 
