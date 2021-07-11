@@ -128,7 +128,7 @@ def profile_following(request, username):
     paginator = Paginator(followings, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'myfollow.html', {
+    return render(request, 'myFollow.html', {
         'page': page,
         'paginator': paginator,
         'followings': followings,
