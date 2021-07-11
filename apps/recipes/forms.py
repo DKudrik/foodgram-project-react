@@ -5,8 +5,6 @@ from .models import Recipe, Tag
 
 
 class RecipeForm(ModelForm):
-    quantity = forms.DecimalField(min_value=0.1, decimal_places=2)
-
     class Meta:
         model = Recipe
         fields = [
