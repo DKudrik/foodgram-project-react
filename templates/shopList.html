@@ -28,7 +28,7 @@
         </li>
       {% endfor %}
     </ul>
-    {% if {{ request|count_unauth_purchases }} > 0 %}
+    {% if recipes.count > 0 %}
       <a href="{% url 'purchases_download' %}"><button class="button button_style_blue">Скачать список</button></a>
     {% endif %}
   </div>
