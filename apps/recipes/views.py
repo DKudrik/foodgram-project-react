@@ -227,8 +227,13 @@ def remove_purchase(request, recipe_id):
 
 def remove_purchase_list(request, recipe_id):
     """Remove a recipe from shoplist when a user in a shoplist"""
+    user_ip = request.META['REMOTE_ADDR']
+    if request.session.get(user_ip):
+        recipe_pks = request.session[user_ip]
+    if recipe_id in recipe_pks:
+        recipe_pks.remove(recipe_id)
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    purchase = Purchase.objects.filter(user=request.user, recipe=recipe)
+    purchase = Purchase.objects.filter(recipe=recipe)
     purchase.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
