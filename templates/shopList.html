@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %} Список покупок {% endblock %}
 {% load static %}
+{% load recipe_filters %}
 {% block styles %}<link rel="stylesheet" href="{% static './pages/shopList.css' %}">{% endblock %}
 
 {% block content %}
@@ -27,7 +28,9 @@
         </li>
       {% endfor %}
     </ul>
-    <a href="{% url 'purchases_download' %}"><button class="button button_style_blue">Скачать список</button></a>
+    {% if {{ request|count_unauth_purchases }} > 0 %}
+      <a href="{% url 'purchases_download' %}"><button class="button button_style_blue">Скачать список</button></a>
+    {% endif %}
   </div>
 {% endblock %}
 
