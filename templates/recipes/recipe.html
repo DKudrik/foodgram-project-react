@@ -14,15 +14,14 @@
     <div class="single-card__info">
       <div class="single-card__header-info">
         <h1 class="single-card__title">{{ recipe.title }}</h1>
-        <div class="single-card__favorite">
-          <button class="button button_style_none" name="favorites" href="{% url 'profile_purchases' request.user %}"
-            data-out>
-            <span class="icon-favorite icon-favorite_big"></span>
-          </button>
-          {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
+          <div class="single-card__favorite">
+            <button class="button button_style_none" name="favorites" data-out>
+              <span class="icon-favorite icon-favorite_big"></span>
+            </button>
             <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
       </div>
       <ul class="single-card__items">
         {% for tag in recipe.tags.all %}
