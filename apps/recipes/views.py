@@ -79,7 +79,6 @@ def recipe_delete(request, recipe_id):
     return redirect('index')
 
 
-@login_required
 def profile(request, username):
     tags_list = create_tags_list(request)
     all_tags = Tag.objects.all()
