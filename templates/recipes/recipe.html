@@ -43,7 +43,7 @@
       <ul class="single-card__items">
         {% if user.is_authenticated %}
           {% if request.user|in_purchases_auth:recipe %}
-            <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases" data-out><span
+            <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases"><span
               class="icon-check button__icon"></span> Рецепт добавлен</button></li>
           {% else %}
             <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span
@@ -51,7 +51,7 @@
           {% endif %}
         {% else %}
           {% if request|in_purchases_not_auth:recipe.id %}
-            <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases" data-out><span
+            <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases"><span
               class="icon-check button__icon"></span> Рецепт добавлен</button></li>
           {% else %}
             <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span
