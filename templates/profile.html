@@ -15,12 +15,11 @@
   {% if request.user.is_authenticated and request.user != author %}
     {% if author|follow_exists:user %}
       <button class="button button_style_light-blue button_size_auto" name="subscribe">
-        <a style="color: inherit; text-decoration:none;" href="{% url 'add_subscription' %}">Отписаться</a>
+        Отписаться
       </button>
     {% else %}
       <button class="button button_style_light-blue button_size_auto" name="subscribe">
-        <a style="color: inherit; text-decoration:none;" 
-        href="{% url 'remove_subscription' author.id %}">Подписаться на автора</a>
+        Подписаться на автора
       </button>
     {% endif %} 
   {% endif %} 
