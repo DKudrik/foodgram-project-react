@@ -104,21 +104,26 @@ def profile(request, username):
 
 
 @login_required
-def profile_follow(request, username):
-    author = get_object_or_404(User, username=username)
+@api_view(('POST',))
+def add_subscription(request):
+    author_id = request.data.get('id')
+    author = get_object_or_404(User, id=author_id)
     if request.user != author:
         Follow.objects.get_or_create(user=request.user, author=author)
-    return redirect(request.META.get('HTTP_REFERER'))
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 @login_required
-def profile_unfollow(request, username):
-    author = get_object_or_404(User, username=username)
+@api_view(('DELETE',))
+def remove_subscription(request, author_id):
+    author = get_object_or_404(User, id=author_id)
     follow_to_delete = get_object_or_404(Follow,
                                          user=request.user,
-                                         author=author)
-    follow_to_delete.delete()
-    return redirect(request.META.get('HTTP_REFERER'))
+                                         author=author).delete()
+    if follow_to_delete:
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 @login_required
