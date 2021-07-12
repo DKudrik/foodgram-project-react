@@ -25,7 +25,7 @@ urlpatterns = [
     path('subscriptions/',
          views.add_subscription,
          name='add_subscription'),
-    path('subscriptions/ <id:author_id>/',
+    path('subscriptions/ <int:author_id>/',
          views.remove_subscription,
          name='remove_subscription'),
     path('<str:username>/followings/',
