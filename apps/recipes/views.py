@@ -10,11 +10,28 @@ from .forms import RecipeForm
 from .models import Favourite, Follow, Ingredient, Purchase, Recipe, Tag, User
 from .serializers import IngredientSerializer
 from .utils import create_pdf, create_tags_list, edit_recipe, save_recipe
-from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse('ПРОВЕРКА')
+    tags_list = create_tags_list(request)
+    all_tags = Tag.objects.all()
+    recipes = Recipe.objects.filter(
+        tags__name__in=tags_list
+    ).select_related(
+        'author'
+    ).prefetch_related(
+        'tags'
+    ).distinct(
+    ).order_by('-pk')
+    paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {'paginator': paginator,
+               'recipe': recipes,
+               'page': page,
+               'all_tags': all_tags,
+               'tags_list': tags_list}
+    return render(request, 'index.html', context)
 
 
 @login_required
