@@ -127,6 +127,16 @@ def remove_subscription(request, author_id):
 
 
 @login_required
+def profile_unfollow(request, username):
+    author = get_object_or_404(User, username=username)
+    follow_to_delete = get_object_or_404(Follow,
+                                         user=request.user,
+                                         author=author)
+    follow_to_delete.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
 def profile_following(request, username):
     followings = User.objects.filter(
         following__user=request.user).all().order_by('-pk')
