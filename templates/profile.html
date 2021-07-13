@@ -15,11 +15,11 @@
   {% if request.user.is_authenticated and request.user != author %}
     {% if author|follow_exists:user %}
       <p style="padding: 0 0 2em 0;">
-        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" >Отписаться</button>
+        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_unfollow' following.username %}">Отписаться</a>
       </p>
     {% else %}
       <p style="padding: 0 0 2em 0;">
-        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button>
+        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_follow' following.username %}">Подписаться на автора</a>
       </p>
     {% endif %} 
   {% endif %} 
