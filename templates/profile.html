@@ -11,16 +11,16 @@
   <ul class="tags">
     {% include "includes/tags.html" %}
 </div>
-<div class="card-list">
+<div class="author-subscribe" data-author="{{ author.id }}">
   {% if request.user.is_authenticated and request.user != author %}
     {% if author|follow_exists:user %}
-      <button class="button button_style_light-blue button_size_auto" name="subscribe">
-        Отписаться
-      </button>
+      <p style="padding: 0 0 2em 0;">
+        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" >Отписаться</button>
+      </p>
     {% else %}
-      <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>
-        Подписаться на автора
-      </button>
+      <p style="padding: 0 0 2em 0;">
+        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button>
+      </p>
     {% endif %} 
   {% endif %} 
 </div>
