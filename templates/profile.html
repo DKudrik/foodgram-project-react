@@ -19,7 +19,7 @@
       </p>
     {% else %}
       <p style="padding: 0 0 2em 0;">
-        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_follow' following.username %}">Подписаться на автора</a>
+        <a style="color: inherit; text-decoration:none;" href="{% url 'profile_follow' author.username %}">Подписаться на автора</a>
       </p>
     {% endif %} 
   {% endif %} 
