@@ -40,8 +40,8 @@
           </ul>
         </div>
         <div class="card-user__footer">
-          {% if request.user.is_authenticated and request.user != author %}
-            {% if author|follow_exists:user %}
+          {% if request.user.is_authenticated and request.user != recipe.author %}
+            {% if recipe.author|follow_exists:user %}
               <button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться</button>
             {% else %}
               <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button>
