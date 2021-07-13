@@ -28,7 +28,7 @@ urlpatterns = [
     path('subscriptions/ <int:author_id>/',
          views.remove_subscription,
          name='remove_subscription'),
-    path('profile_unfollow/',
+    path('profile_unfollow/<str:username>/',
          views.profile_unfollow,
          name='profile_unfollow'),
     path('<str:username>/followings/',
