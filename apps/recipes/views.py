@@ -14,19 +14,6 @@ from django.http import HttpResponse
 
 
 def index(request):
-    tags_list = create_tags_list(request)
-    all_tags = Tag.objects.all()
-    recipes = Recipe.objects.filter(
-        tags__name__in=tags_list
-    ).select_related(
-        'author'
-    ).prefetch_related(
-        'tags'
-    ).distinct(
-    ).order_by('-pk')
-    paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
     return HttpResponse('ПРОВЕРКА')
 
 
