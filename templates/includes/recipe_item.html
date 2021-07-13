@@ -7,7 +7,7 @@
        alt="Картинка" class="card__image"></a>
   {% endthumbnail %}
   <div class="card__body">
-    <a class="card__title link" href="{% url 'recipe' recipe.id %}" target="_blank"> 123 </a>
+    <a class="card__title link" href="{% url 'recipe' recipe.id %}" target="_blank">{{ recipe.title }}</a>
     <ul class="card__items">
       {% for tag in recipe.tags.all %}
         <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.name }}</span></li>
