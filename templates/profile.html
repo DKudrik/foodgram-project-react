@@ -14,17 +14,13 @@
 <div class="author-subscribe" data-author="{{ author.id }}">
   {% if request.user.is_authenticated and request.user != author %}
     {% if author|follow_exists:user %}
-      <li class="single-card__item">
-        <button class="button button_style_light-blue button_size_subscribe" name="subscribe">
-          Отписаться
-        </button>
-      </li>
+      <button class="button button_style_light-blue button_size_subscribe" name="subscribe">
+        Отписаться
+      </button>
     {% else %}
-      <li class="single-card__item">
-        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-          Подписаться на автора
-        </button> 
-      </li>
+      <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
+        Подписаться на автора
+      </button> 
     {% endif %} 
   {% endif %} 
 </div>
