@@ -27,11 +27,6 @@ def index(request):
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    context = {'paginator': paginator,
-               'recipe': recipes,
-               'page': page,
-               'all_tags': all_tags,
-               'tags_list': tags_list}
     return HttpResponse('ПРОВЕРКА')
 
 
