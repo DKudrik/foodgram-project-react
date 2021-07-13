@@ -10,6 +10,7 @@ from .forms import RecipeForm
 from .models import Favourite, Follow, Ingredient, Purchase, Recipe, Tag, User
 from .serializers import IngredientSerializer
 from .utils import create_pdf, create_tags_list, edit_recipe, save_recipe
+from django.http import HttpResponse
 
 
 def index(request):
@@ -31,7 +32,7 @@ def index(request):
                'page': page,
                'all_tags': all_tags,
                'tags_list': tags_list}
-    return render(request, 'index.html', context)
+    return HttpResponse('ПРОВЕРКА')
 
 
 @login_required

@@ -14,7 +14,7 @@
     {% endthumbnail %}
     <div class="single-card__info">
       <div class="single-card__header-info">
-        <h1 class="single-card__title">123{{ recipe.title }}</h1>
+        <h1 class="single-card__title">{{ recipe.title }}</h1>
         {% if request.user.is_authenticated %}
           {% if request.user|in_favorites:recipe %}
             <div class="single-card__favorite">
