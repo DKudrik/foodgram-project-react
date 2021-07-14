@@ -104,26 +104,22 @@ def profile(request, username):
 
 
 @login_required
-@api_view(('POST',))
+@api_view(('POST', 'DELETE',))
 def add_subscription(request):
     author_id = request.data.get('id')
     author = get_object_or_404(User, id=author_id)
-    if request.user != author:
-        Follow.objects.get_or_create(user=request.user, author=author)
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
-
-
-@login_required
-@api_view(('DELETE',))
-def remove_subscription(request, author_id):
-    author = get_object_or_404(User, id=author_id)
-    follow_to_delete = get_object_or_404(Follow,
-                                         user=request.user,
-                                         author=author).delete()
-    if follow_to_delete:
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+    if request.method == 'POST':
+        if request.user != author:
+            Follow.objects.get_or_create(user=request.user, author=author)
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
+    elif request.method == 'DELETE':
+        follow_to_delete = get_object_or_404(Follow,
+                                             user=request.user,
+                                             author=author).delete()
+        if follow_to_delete:
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
 
 
 @login_required
