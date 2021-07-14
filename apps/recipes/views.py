@@ -108,7 +108,7 @@ def profile(request, username):
 
 @login_required
 @require_http_methods(['POST'])
-def add_subscription(request, author_id):
+def add_subscription(request):
     if request.method == 'POST':
         author_id = json.loads(request.body).get('id')
         author = get_object_or_404(User, id=author_id)
