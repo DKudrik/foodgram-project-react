@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -102,6 +104,25 @@ def profile(request, username):
                'all_tags': all_tags,
                'tags_list': tags_list}
     return render(request, 'profile.html', context)
+
+
+@login_required
+@require_http_methods(['POST', 'DELETE'])
+def subscriptions(request, author_id):
+    if request.method == 'POST':
+        author_id = json.loads(request.body).get('id')
+        author = get_object_or_404(User, id=author_id)
+        if request.user == author:
+            return JsonResponse({'success': False})
+        Follow.objects.get_or_create(user=request.user, author=author)
+        return JsonResponse({'success': True})
+    elif request.method == 'DELETE':
+        author = get_object_or_404(User, id=author_id)
+        removed = Follow.objects.filter(user=request.user,
+                                        author=author).delete()
+        if removed:
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
 
 
 @require_http_methods(['POST'])
