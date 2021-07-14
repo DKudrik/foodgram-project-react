@@ -29,7 +29,7 @@ services:
     container_name: nginx 
     restart: unless-stopped 
     volumes: 
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./nginx/:/etc/nginx/conf.d/
       - static_value:/var/html/static:ro 
       - media_value:/var/html/media:ro 
     ports: 
