@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -104,16 +105,18 @@ def profile(request, username):
 
 
 @login_required
-@api_view(('POST', 'DELETE',))
+@require_http_methods(['POST', 'DELETE'])
 def add_subscription(request, author_id):
-    author_id = author_id
-    author = get_object_or_404(User, id=author_id)
     if request.method == 'POST':
+        author_id = request.data.get('id')
+        author = get_object_or_404(User, id=author_id)
         if request.user != author:
             Follow.objects.get_or_create(user=request.user, author=author)
             return JsonResponse({'success': True})
         return JsonResponse({'success': False})
     elif request.method == 'DELETE':
+        author_id = author_id
+        author = get_object_or_404(User, id=author_id)
         follow_to_delete = get_object_or_404(Follow,
                                              user=request.user,
                                              author=author).delete()
