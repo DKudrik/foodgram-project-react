@@ -131,6 +131,7 @@ def remove_subscription(request, author_id):
     follow_to_delete = Follow.objects.filter(user=request.user,
                                              author=author)
     follow_to_delete.delete()
+    print('FUNCTION-REMOVE SUBSCRIPTION')
     return JsonResponse({'success': True})
 
 
