@@ -107,15 +107,14 @@ def profile(request, username):
 
 
 @login_required
-@require_http_methods(['POST'])
+@api_view(['POST'])
 def add_subscription(request):
-    if request.method == 'POST':
-        author_id = json.loads(request.body).get('id')
-        author = get_object_or_404(User, id=author_id)
-        if request.user == author:
-            return JsonResponse({'success': False})
-        Follow.objects.get_or_create(user=request.user, author=author)
-        return JsonResponse({'success': True})
+    author_id = json.loads(request.body).get('id')
+    author = get_object_or_404(User, id=author_id)
+    if request.user == author:
+        return JsonResponse({'success': False})
+    Follow.objects.get_or_create(user=request.user, author=author)
+    return JsonResponse({'success': True})
 
 
 @login_required
