@@ -105,7 +105,7 @@ def profile(request, username):
 
 @login_required
 @api_view(('POST', 'DELETE',))
-def add_subscription(request):
+def add_subscription(request, author_id):
     author_id = request.data.get('id')
     author = get_object_or_404(User, id=author_id)
     if request.method == 'POST':
