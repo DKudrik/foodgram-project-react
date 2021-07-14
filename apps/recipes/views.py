@@ -118,7 +118,7 @@ def add_subscription(request):
 @login_required
 @require_http_methods(['DELETE'])
 def remove_subscription(request, author_id):
-    author_id = request.data.get('id')
+    author_id = author_id
     author = get_object_or_404(User, id=author_id)
     follow_to_delete = Follow.objects.filter(user=request.user,
                                              author=author)
