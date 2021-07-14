@@ -118,14 +118,12 @@ def add_subscription(request):
 @login_required
 @require_http_methods(['DELETE'])
 def remove_subscription(request, author_id):
-    if request.method == 'DELETE':
-        author_id = request.data.get('id')
-        author = get_object_or_404(User, id=author_id)
-        removed = Follow.objects.filter(user=request.user,
-                                        author=author).delete()
-        if removed:
-            return JsonResponse({'success': True})
-        return JsonResponse({'success': False})
+    author_id = request.data.get('id')
+    author = get_object_or_404(User, id=author_id)
+    follow_to_delete = Follow.objects.filter(user=request.user,
+                                    author=author)
+    follow_to_delete.delete()
+    return JsonResponse({'success': True})
 
 
 @login_required
