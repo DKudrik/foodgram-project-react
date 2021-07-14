@@ -107,6 +107,7 @@ def profile(request, username):
 @login_required
 @api_view(['POST', 'DELETE'])
 def subscriptions(request):
+    print('FUNC SUBSCRIPTIONS')
     if request.method == 'POST':
         author_id = request.data.get('id')
         author = get_object_or_404(User, id=author_id)
