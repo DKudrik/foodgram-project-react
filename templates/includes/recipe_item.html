@@ -29,7 +29,7 @@
             <span class="icon-plus button__icon"></span>Добавить в покупки
           </button>
         {% endif %}
-      {% else %}
+      {% else %} 
         {% if request|in_purchases_not_auth:recipe.id %}
           <button class="button button_style_light-blue-outline" name="purchases">
             <span class="icon-check button__icon"></span> Рецепт добавлен
