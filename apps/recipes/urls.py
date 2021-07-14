@@ -22,7 +22,7 @@ urlpatterns = [
     path('ingredients/',
          views.search_ingredients,
          name='search_ingredients'),
-    path('subscriptions/<int:author_id>',
+    path('subscriptions/ <int:author_id>',
          views.add_subscription,
          name='add_subscription'),
     path('<str:username>/followings/',
