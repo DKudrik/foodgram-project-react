@@ -104,9 +104,8 @@ def profile(request, username):
     return render(request, 'profile.html', context)
 
 
-@login_required
-@require_http_methods(['POST', 'DELETE'])
-def add_subscription(request, author_id):
+@require_http_methods(['POST'])
+def add_subscription(request):
     if request.method == 'POST':
         author_id = request.data.get('id')
         author = get_object_or_404(User, id=author_id)
@@ -114,7 +113,11 @@ def add_subscription(request, author_id):
             Follow.objects.get_or_create(user=request.user, author=author)
             return JsonResponse({'success': True})
         return JsonResponse({'success': False})
-    elif request.method == 'DELETE':
+
+
+@require_http_methods(['DELETE'])
+def remove_subscription(request, author_id):
+    if request.method == 'DELETE':
         author_id = author_id
         author = get_object_or_404(User, id=author_id)
         follow_to_delete = get_object_or_404(Follow,
