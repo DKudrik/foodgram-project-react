@@ -105,14 +105,22 @@ def profile(request, username):
 
 
 @login_required
-@api_view(['POST'])
-def add_subscription(request):
-    author_id = request.data.get('id')
-    author = get_object_or_404(User, id=author_id)
-    if request.user == author:
-        return JsonResponse({'success': False})
-    Follow.objects.get_or_create(user=request.user, author=author)
-    return JsonResponse({'success': True})
+@api_view(['POST', 'DELETE'])
+def subscriptions(request):
+    if request.method == 'POST':
+        author_id = request.data.get('id')
+        author = get_object_or_404(User, id=author_id)
+        if request.user == author:
+            return JsonResponse({'success': False})
+        Follow.objects.get_or_create(user=request.user, author=author)
+        return JsonResponse({'success': True})
+    elif request.method == 'DELETE':
+        author_id = request.data.get('id')
+        author = get_object_or_404(User, id=author_id)
+        follow_to_delete = Follow.objects.filter(user=request.user,
+                                                 author=author)
+        follow_to_delete.delete()
+        return JsonResponse({'success': True})
 
 
 @login_required
