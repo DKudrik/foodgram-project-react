@@ -104,7 +104,6 @@ def profile(request, username):
     return render(request, 'profile.html', context)
 
 
-@login_required
 @api_view(['POST', 'DELETE'])
 def subscriptions(request):
     if request.method == 'POST':
@@ -123,7 +122,6 @@ def subscriptions(request):
         return JsonResponse({'success': True})
 
 
-@login_required
 @require_http_methods(['DELETE'])
 def remove_subscription(request, author_id):
     author_id = author_id
