@@ -22,9 +22,11 @@ urlpatterns = [
     path('ingredients/',
          views.search_ingredients,
          name='search_ingredients'),
-
-    path('subscriptions/<int:author_id>',
+    path('subscriptions/',
          views.subscriptions,
+         name='subscriptions'),
+    path('subscriptions/<int:author_id>',
+         views.remove_subscription,
          name='remove_subscription'),
     path('subscriptions/ <int:author_id>',
          views.remove_subscription,
