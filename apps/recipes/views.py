@@ -116,7 +116,7 @@ def subscriptions(request):
 
 
 @login_required
-@require_http_methods(['DELETE'])
+@api_view(['DELETE'])
 def remove_subscription(request, author_id):
     author_id = author_id
     author = get_object_or_404(User, id=author_id)
