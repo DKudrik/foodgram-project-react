@@ -102,7 +102,7 @@
 {% endblock %}
 
 {% block scripts %}
-  {% if user.is_authenticated %}
+  {% if request.user.is_authenticated %}
     <script src="{% static './js/components/Purchases.js' %}"></script>
     <script src="{% static './js/components/Favorites.js' %}"></script>
     <script src="{% static 'js/components/Subscribe.js' %}"></script>
