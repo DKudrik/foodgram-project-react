@@ -105,7 +105,7 @@ def profile(request, username):
 
 
 @login_required
-@api_view(['POST', 'DELETE'])
+@require_http_methods(['DELETE'])
 def subscriptions(request):
     if request.method == 'POST':
         author_id = request.data.get('id')
