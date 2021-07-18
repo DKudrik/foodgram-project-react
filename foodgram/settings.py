@@ -1,5 +1,7 @@
 import os
+import sentry_sdk
 
+from sentry_sdk.integrations.django import DjangoIntegration
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -142,3 +144,9 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+
+
+sentry_sdk.init(
+    dsn='https://1e278028230b4cc1ae9de5f077d95dbc@o544367.ingest.sentry.io/5869900',
+    integrations=[DjangoIntegration()],
+)
