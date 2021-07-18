@@ -1,5 +1,7 @@
 import os
+import sentry_sdk
 
+from sentry_sdk.integrations.django import DjangoIntegration
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -144,16 +146,7 @@ CACHES = {
 }
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
-}
+sentry_sdk.init(
+    dsn='https://1e278028230b4cc1ae9de5f077d95dbc@o544367.ingest.sentry.io/5869900',
+    integrations=[DjangoIntegration()],
+)
