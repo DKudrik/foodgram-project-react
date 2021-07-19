@@ -127,6 +127,19 @@ def remove_subscription(request, author_id):
 
 
 @login_required
+@api_view(('DELETE',))
+def delete_subscription(request):
+    author_id = request.data.get('id')
+    author = get_object_or_404(User, id=author_id)
+    follow_to_delete = get_object_or_404(Follow,
+                                         user=request.user,
+                                         author=author).delete()
+    if follow_to_delete:
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
+
+@login_required
 def profile_following(request, username):
     followings = User.objects.filter(
         following__user=request.user).all().order_by('-pk')
