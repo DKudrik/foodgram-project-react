@@ -59,14 +59,6 @@
             <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span
               class="icon-plus"></span> Добавить в покупки</button></li>
           {% endif %}
-        {% else %}
-          {% if request|in_purchases_not_auth:recipe.id %}
-            <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases"><span
-              class="icon-check button__icon"></span> Рецепт добавлен</button></li>
-          {% else %}
-            <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span
-              class="icon-plus"></span> Добавить в покупки</button></li>
-          {% endif %}
         {% endif %}
         {% if request.user.is_authenticated and request.user != recipe.author %}
           {% if recipe.author|follow_exists:request.user %}
