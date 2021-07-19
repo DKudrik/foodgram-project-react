@@ -12,7 +12,7 @@
   </div>
   <div class="card-list">
     {% for following in page %}
-      <div class="card-user" data-author="{{ recipe.author.id }}">
+      <div class="card-user" data-author="{{ following.id }}">
         <div class="card-user__header">
           <h2 class="card-user__title">{{ following.username }}</h2>
         </div>
