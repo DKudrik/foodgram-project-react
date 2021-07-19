@@ -276,13 +276,3 @@ def not_auth_purchases(request):
 
 def purchases_download(request):
     return create_pdf(request)
-
-
-@login_required
-def profile_unfollow(request, username):
-    author = get_object_or_404(User, username=username)
-    follow_to_delete = get_object_or_404(Follow,
-                                         user=request.user,
-                                         author=author)
-    follow_to_delete.delete()
-    return redirect(request.META.get('HTTP_REFERER'))
